@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>备份角色（BackupCharacter） 服主教程</title>
+<style>
+/* ============================================================
+   样式区：禁止修改！
+   本模板是 xiangmujiaocheng 技能的「服主教程」专属模板（清爽文档蓝）。
+   修改此区会破坏所有项目服主教程的视觉统一。
+   ============================================================ */
+:root{--acc:#2563eb;--accbg:#eff6ff;--line:#e2e8f0;--line2:#cbd5e1;--text:#1e293b;--dim:#64748b;--bg2:#f8fafc;--ok:#16a34a;--warn:#d97706;--warnbg:#fffbeb;--warnline:#fde68a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15.5px/1.85 "Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:var(--text);background:#fff}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+code{background:var(--accbg);color:#1d4ed8;border-radius:4px;padding:1px 7px;font-family:Consolas,"Courier New",monospace;font-size:13.5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px 16px;overflow:auto}
+pre code{background:none;color:#0f172a;padding:0}
+.hide{display:none!important}
+
+.hero{background:linear-gradient(180deg,#eef5ff 0%,#ffffff 100%);border-bottom:1px solid var(--line);padding:36px 20px 26px}
+.hero-in{max-width:1180px;margin:0 auto}
+.kind{display:inline-block;background:var(--acc);color:#fff;border-radius:4px;font-size:13px;padding:2px 12px;letter-spacing:2px}
+.hero h1{margin:12px 0 6px;font-size:30px}
+.hero h1 .accent{color:var(--acc)}
+.hero .sub{color:var(--dim);margin:0;font-size:15px}
+
+.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.toolbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 20px}
+#searchInput{flex:1 1 240px;border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:14.5px;outline:none;background:var(--bg2)}
+#searchInput:focus{border-color:var(--acc);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:#fff;color:var(--dim);border-radius:999px;padding:5px 15px;font-size:13.5px;cursor:pointer}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.count{color:var(--dim);font-size:13px;white-space:nowrap}
+
+.layout{max-width:1180px;margin:0 auto;padding:26px 20px 70px;display:flex;gap:36px;align-items:flex-start}
+.toc{flex:0 0 215px;position:sticky;top:66px}
+.toc-title{font-size:12.5px;color:var(--dim);letter-spacing:3px;margin-bottom:8px;padding-left:10px}
+.toc a{display:block;color:var(--dim);padding:6px 10px;border-left:2px solid var(--line);font-size:14px}
+.toc a:hover{color:var(--acc);border-left-color:var(--acc);background:var(--accbg);text-decoration:none}
+.toc a.dim{opacity:.35}
+.content{flex:1 1 500px;min-width:320px}
+
+.unit{margin:0 0 38px}
+.group{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin-bottom:4px}
+.unit>h2{margin:0 0 10px;font-size:22px;border-left:4px solid var(--acc);padding-left:12px}
+.lead{color:var(--dim);margin:0 0 14px;font-size:14.5px}
+.unit h3{font-size:16.5px;margin:20px 0 8px}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:13px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:.15s}
+.card:hover{border-color:var(--acc);box-shadow:0 4px 14px rgba(37,99,235,.12)}
+.card .icon{font-size:22px}
+.card h4{margin:7px 0 5px;font-size:15.5px;color:var(--acc)}
+.card p{margin:0;color:var(--dim);font-size:13.5px}
+
+ol.steps{list-style:none;counter-reset:st;padding:0;margin:8px 0 0}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 20px 48px}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps>li::after{content:"";position:absolute;left:14px;top:36px;bottom:4px;width:2px;background:var(--line)}
+ol.steps>li:last-child{padding-bottom:2px}
+ol.steps>li:last-child::after{display:none}
+.step-title{display:block;font-weight:700;margin-bottom:3px}
+ol.steps p{margin:0}
+
+.note,.warning{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14.5px}
+.note{background:var(--accbg);border:1px solid #bfdbfe}
+.warning{background:var(--warnbg);border:1px solid var(--warnline)}
+
+table.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+.data-table th{background:var(--accbg);color:#1d4ed8;text-align:left}
+.data-table th,.data-table td{border:1px solid var(--line);padding:8px 13px}
+.data-table tr:nth-child(even) td{background:#fbfdff}
+.data-table td code{white-space:nowrap}
+
+details.faq{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:9px 0}
+details.faq summary{cursor:pointer;font-weight:600}
+details.faq[open]{border-color:var(--acc)}
+details.faq .answer{color:var(--dim);padding-top:7px}
+
+.shot{border:2px dashed var(--line2);border-radius:8px;padding:26px;text-align:center;color:var(--dim);font-size:14px;margin:13px 0}
+.badge{display:inline-block;border-radius:4px;padding:1px 10px;font-size:12.5px;margin-right:6px;color:var(--acc);border:1px solid var(--acc)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}
+.badge.warn{color:var(--warn);border-color:var(--warn)}
+.empty{border:1px dashed var(--line2);border-radius:10px;padding:44px;text-align:center;color:var(--dim);margin:20px 0}
+
+.foot{border-top:1px solid var(--line);color:var(--dim);text-align:center;padding:20px;font-size:13px;background:var(--bg2)}
+@media (max-width:820px){.toc{display:none}.layout{padding-top:18px}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hero-in">
+  <span class="kind">服主教程</span>
+  <h1>备份角色（BackupCharacter） <span class="accent">配置与部署指南</span></h1>
+  <p class="sub">面向服主：安装部署、备份配置详解、备份机制说明、角色恢复步骤与疑难排查</p>
+</div></header>
+
+<div class="toolbar"><div class="toolbar-in">
+  <input id="searchInput" type="search" placeholder="搜索配置项、命令、问题…">
+  <div class="chips">
+    <button class="chip on" data-cat="all">全部</button>
+    <button class="chip" data-cat="deploy">部署</button>
+    <button class="chip" data-cat="basic">基础配置</button>
+    <button class="chip" data-cat="backup">备份与恢复</button>
+    <button class="chip" data-cat="cmd">命令详解</button>
+    <button class="chip" data-cat="faq">疑难解答</button>
+  </div>
+  <span class="count" id="resultCount"></span>
+</div></div>
+
+<div class="layout">
+<nav class="toc">
+  <div class="toc-title">目录</div>
+  <a href="#u1">软件总览</a>
+  <a href="#u2">环境要求</a>
+  <a href="#u3">部署安装</a>
+  <a href="#u4">配置文件说明</a>
+  <a href="#u5">配置总表</a>
+  <a href="#u5b">Backup 备份小节</a>
+  <a href="#u5c">ConsoleEncoding 控制台编码</a>
+  <a href="#u7">备份机制详解</a>
+  <a href="#u7b">恢复角色步骤</a>
+  <a href="#u8">命令用法详解</a>
+  <a href="#u8b">Reload 命令详解</a>
+  <a href="#u9">常见问题</a>
+  <a href="#u10">技术支持</a>
+</nav>
+
+<main class="content">
+
+<section class="unit" id="u1" data-cat="basic">
+  <div class="group">第一章 · 软件总览</div>
+  <h2>软件总览</h2>
+  <p class="lead">「备份角色（BackupCharacter）」是一个方舟生存进化服务端 ArkApi 插件：每当游戏保存玩家数据时，自动把该玩家的官方角色档案整文件复制到独立备份盘，按「日期 / SteamID / 等级」三级分层存放。角色损坏、误删、回档纠纷时，把备份拷回存档目录即可把角色恢复到备份时刻的状态。</p>
+  <div class="card-grid">
+    <div class="unit card" data-cat="backup"><div class="icon">💾</div><h4>存档即备份</h4><p>游戏每次保存玩家数据（自动存档、玩家退出、SaveWorld）都会自动触发备份，无需任何手动操作。</p></div>
+    <div class="unit card" data-cat="backup"><div class="icon">🗂️</div><h4>日期 / 玩家 / 等级分层</h4><p>备份按「根目录\日期\SteamID\等级」三级目录存放，想找某天某级某玩家的档案一目了然。</p></div>
+    <div class="unit card" data-cat="backup"><div class="icon">🧬</div><h4>原文件整备</h4><p>直接复制官方 <code>.arkprofile</code> / <code>.profilebak</code> 原文件，角色全部数据（等级、经验、印痕、物品栏、状态点）原样保留。</p></div>
+    <div class="unit card" data-cat="basic"><div class="icon">🎚️</div><h4>低等级过滤</h4><p>可配置最低备份等级，新号、低级号不占备份盘空间（预置 5 级起备份）。</p></div>
+    <div class="unit card" data-cat="deploy"><div class="icon">🔍</div><h4>自动定位存档目录</h4><p>自动解析服务器启动参数里的 <code>AltSaveDirectoryName</code>，多存档目录服务器开箱即用。</p></div>
+    <div class="unit card" data-cat="cmd"><div class="icon">🔄</div><h4>配置热重载</h4><p>控制台 / RCON 执行 <code>BackupCharacter.Reload</code>，改完配置免重启立即生效。</p></div>
+  </div>
+</section>
+
+<section class="unit" id="u2" data-cat="deploy">
+  <div class="group">第二章 · 环境要求</div>
+  <h2>环境要求</h2>
+  <table class="data-table">
+    <tr><th style="width:160px">项目</th><th>要求</th></tr>
+    <tr><td>操作系统</td><td>Windows（服务端为 Windows 版方舟生存进化服务器）</td></tr>
+    <tr><td>服务端插件框架</td><td>ArkApi，最低版本 3.5（依据 <code>Output/PluginInfo.json</code> 的 <code>MinApiVersion</code> 字段）</td></tr>
+    <tr><td>备份磁盘空间</td><td>备份目标盘需有可用空间。单个角色档案约几 MB，按「每天每等级一份」累积，建议预留数 GB 并定期清理旧日期目录</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="u3" data-cat="deploy">
+  <div class="group">第三章 · 部署安装</div>
+  <h2>部署安装</h2>
+  <p class="lead">以下为拿到编译好的插件后在服务器上的部署步骤。插件英文名为 <code>BackupCharacter</code>，目录与命令名均由它决定。</p>
+  <ol class="steps">
+    <li><span class="step-title">确认服务器已安装 ArkApi</span><p>检查服务器目录 <code>ShooterGame\Binaries\Win64\ArkApi\</code> 是否存在 → 存在则继续；不存在请先安装 ArkApi（最低 3.5）。</p></li>
+    <li><span class="step-title">复制插件文件</span><p>把 <code>PluginInfo.json</code>、<code>config.json</code>、<code>BackupCharacter.dll</code> 复制到 <code>ShooterGame\Binaries\Win64\ArkApi\Plugins\BackupCharacter\</code> → 目录不存在时先创建（开发工程的 <code>一键安装.bat</code> 会自动完成复制与建目录，并支持部署停用副本 <code>BackupCharacter.dll.arkapi</code>）。</p></li>
+    <li><span class="step-title">修改备份根目录（关键）</span><p>打开插件目录下的 <code>config.json</code>，把 <code>Backup.RootDirectory</code> 改为你实际存放备份的盘符路径（如 <code>D:\\ArkBackup</code>）→ 建议指定到非系统盘、且不属于服务器存档目录的位置；配置详解见第四章。</p></li>
+    <li><span class="step-title">重启服务器</span><p>启动方舟服务器 → 控制台出现「先锋.备份角色(1.0) 先锋方舟服主群:138535385」横幅日志即表示插件加载成功。</p></li>
+    <li><span class="step-title">验证备份生效</span><p>等一名 5 级以上的玩家上线后再下线（或等服务器自动存档）→ 到备份根目录检查是否出现「日期\SteamID\等级」目录和 <code>.arkprofile</code> 文件；测试版插件还会在控制台输出「---->备份成功」等调试日志。</p></li>
+  </ol>
+  <div class="warning">若 <code>config.json</code> 缺失或不是合法 JSON，插件加载时会抛出错误 <code>Can't open config.json</code>，插件将无法启动。部署前务必确认配置文件存在且格式正确。</div>
+  <div class="note">备份根目录 <code>RootDirectory</code> 缺失或留空时插件不会报错，只是静默跳过备份——部署后请务必完成第 3 步并按第 5 步验证一次。</div>
+</section>
+
+<section class="unit" id="u4" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>配置文件说明</h2>
+  <p>插件启动时读取服务器目录下的 <code>ArkApi\Plugins\BackupCharacter\config.json</code>。</p>
+  <pre><code>ShooterGame\Binaries\Win64\ArkApi\Plugins\BackupCharacter\
+├── BackupCharacter.dll
+├── BackupCharacter.pdb
+├── PluginInfo.json
+└── config.json   ← 插件配置</code></pre>
+  <div class="note">JSON 里逗号、引号一个都不能少。建议用带 JSON 校验的编辑器（如 VS Code）修改；改前先备份。文件编码为 UTF-8。修改后可在控制台 / RCON 执行 <code>BackupCharacter.Reload</code> 热重载，无需重启服务器。</div>
+</section>
+
+<section class="unit" id="u5" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>配置总表</h2>
+  <p class="lead">本表列出 <code>config.json</code> 的全部配置键，共两组：<code>Backup</code> 控制备份行为，<code>ConsoleEncoding</code> 控制控制台编码。</p>
+  <table class="data-table">
+    <tr><th style="width:210px">配置键</th><th style="width:110px">所在小节</th><th style="width:110px">兜底值</th><th>说明</th></tr>
+    <tr><td><code>Backup.RootDirectory</code></td><td><code>Backup</code></td><td>无（缺失或为空则不备份）</td><td><b>备份根目录（本插件核心配置）</b>，预置 <code>E:\\Backup</code>，必改；详见下方 Backup 小节</td></tr>
+    <tr><td><code>Backup.MinLevel</code></td><td><code>Backup</code></td><td><code>0</code>（缺失时不限制）</td><td>最低备份等级，低于该等级的角色不备份；预置 <code>5</code>；详见下方 Backup 小节</td></tr>
+    <tr><td><code>ConsoleEncoding</code></td><td>顶层</td><td><code>auto</code>（缺失/非法时自动）</td><td>控制台输出编码：<code>auto</code> 按服务器控制台代码页自动选择，<code>gbk</code> / <code>utf8</code> 强制指定；详见下方配置项详解</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="u5b" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>Backup 备份小节（核心配置）</h2>
+  <p><b>什么意思：</b><code>Backup</code> 小节控制备份行为——备份存到哪里、从多少级开始备份。</p>
+  <pre><code>{
+  "Backup": {
+    "RootDirectory": "E:\\Backup",
+    "MinLevel": 5
+  }
+}</code></pre>
+  <table class="data-table">
+    <tr><th style="width:180px">配置键</th><th style="width:110px">预置值</th><th>含义与取值</th></tr>
+    <tr><td><code>Backup.RootDirectory</code></td><td><code>E:\\Backup</code></td><td>备份根目录（JSON 里反斜杠要写成 <code>\\</code>）。建议改到空间充裕的非系统盘；目录不存在时插件会自动逐级创建</td></tr>
+    <tr><td><code>Backup.MinLevel</code></td><td><code>5</code></td><td>最低备份等级（整数）。角色当前总等级低于该值时跳过备份；写 <code>0</code> 表示全部备份。不写这个键则默认 <code>0</code>（不限制）</td></tr>
+  </table>
+  <div class="warning">两个易错点：① JSON 字符串里的 Windows 路径必须双反斜杠（<code>E:\\Backup</code>），写单反斜杠会导致 JSON 解析失败；② <code>MinLevel</code> 必须是数字，写成 <code>"5"</code>（带引号）会在存档时触发插件内部异常（插件会记录日志并跳过本次备份，不影响游戏存档，但备份不会生成）。</div>
+  <div class="note">改完不用重启：控制台 / RCON 执行 <code>BackupCharacter.Reload</code> 即可热生效。</div>
+</section>
+
+<section class="unit" id="u5c" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>ConsoleEncoding 控制台编码</h2>
+  <p><b>什么意思：</b>控制插件往服务器控制台输出文字时用的编码。不同版本 ArkApi 的服务器控制台编码不同（3.54 为 GBK/ANSI，3.55 为 UTF-8），编码不匹配时控制台中文会乱码。</p>
+  <p><b>兜底值：</b><span class="badge">auto</span>（配置缺失或值非法时都按 <code>auto</code> 处理，非法值会在控制台提示一行黄色警告）</p>
+  <pre><code>{
+  "ConsoleEncoding": "auto"
+}</code></pre>
+  <p><b>怎么修改：</b>可选值共三个（大小写不限）：</p>
+  <table class="data-table">
+    <tr><th style="width:110px">取值</th><th>效果</th></tr>
+    <tr><td><code>auto</code></td><td>自动探测：控制台代码页为 936 时转 GBK 输出，否则按 UTF-8 原样输出。3.54 / 3.55 服务器都不用改配置，推荐保持默认</td></tr>
+    <tr><td><code>gbk</code></td><td>强制输出前转 GBK（写 <code>ansi</code> 也可以）</td></tr>
+    <tr><td><code>utf8</code></td><td>强制 UTF-8 原样输出（写 <code>utf-8</code> 也可以）</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="u7" data-cat="backup">
+  <div class="group">第五章 · 备份机制详解</div>
+  <h2>备份机制详解</h2>
+  <p><b>什么时候备份：</b>插件挂钩了游戏的玩家数据保存函数，每当游戏保存一名玩家的数据时（服务器周期性自动存档、玩家退出 / 掉线、执行 SaveWorld 等），先让游戏正常写完存档，随后立即对该玩家做一次备份。</p>
+  <p><b>备份什么：</b>整文件复制该玩家的两个官方角色档案，不做任何格式转换：</p>
+  <table class="data-table">
+    <tr><th style="width:260px">文件</th><th>内容</th></tr>
+    <tr><td><code>{SteamID}.arkprofile</code></td><td>官方角色档案，内含等级、经验、印痕、物品栏、状态点等全部角色数据</td></tr>
+    <tr><td><code>{SteamID}.profilebak</code></td><td>游戏自动维护的档案备份文件，与主档案一并复制</td></tr>
+  </table>
+  <p><b>存到哪里：</b>按「根目录 \ 日期 \ SteamID \ 等级」三级分层：</p>
+  <pre><code>E:\Backup\                          ← RootDirectory 配置的根目录
+└── 2026-09-10\                 ← 备份发生日期（每天一个目录）
+    └── 76561198xxxxxxxx\       ← 玩家 SteamID（每个玩家一个目录）
+        └── 105\                ← 备份时的角色总等级（每级一个目录）
+            ├── 76561198xxxxxxxx.arkprofile
+            └── 76561198xxxxxxxx.profilebak</code></pre>
+  <p><b>备份频率（去重规则）：</b>目标等级目录里 <code>.arkprofile</code> 已存在时本次直接跳过——即<b>每个玩家每天每个等级只保留第一份备份</b>。角色当天升级后会自动在新等级目录再存一份，相当于每个等级都留档。想让同一天重复备份，删掉对应等级目录里的文件即可，下次存档会重新生成。</p>
+  <p><b>从哪里复制：</b>插件自动定位服务器存档目录——解析 <code>ShooterGame\Saved\Config\WindowsServer\RunServer.cmd</code> 里的 <code>AltSaveDirectoryName=</code> 参数（多存档目录服务器自动适配）；启动参数里没有该项时按官方默认目录 <code>SavedArks</code> 处理。</p>
+  <div class="note">备份在游戏存档线程内同步完成，单个档案仅几 MB，对存档耗时影响可忽略；备份流程出现的任何异常（如备份盘掉线）都只记录日志跳过，不会影响游戏正常存档。</div>
+</section>
+
+<section class="unit" id="u7b" data-cat="backup">
+  <div class="group">第五章 · 备份机制详解</div>
+  <h2>恢复角色步骤</h2>
+  <p class="lead">玩家角色损坏、误删、被回档投诉时，把备份档案拷回存档目录即可恢复到备份时刻的状态。全程约五分钟。</p>
+  <ol class="steps">
+    <li><span class="step-title">找到要恢复的备份</span><p>在备份根目录按「日期 \ SteamID \ 等级」找到目标档案——玩家报「昨天 105 级没了」，就找昨天的日期目录下该玩家 SteamID 目录里等级不高于 105 的最新一级（等级目录名就是备份时的角色等级）。</p></li>
+    <li><span class="step-title">关闭服务器</span><p>正常关闭方舟服务器，等待进程完全退出。必须在停服状态下操作，运行中覆盖存档会失败或损坏。</p></li>
+    <li><span class="step-title">拷回备份文件</span><p>把备份目录里的 <code>{SteamID}.arkprofile</code> 复制到服务器存档目录（如 <code>ShooterGame\Saved\SavedArks\</code>，多存档目录服务器按 RunServer.cmd 的 <code>AltSaveDirectoryName</code> 定位）覆盖同名文件；存档目录里若有同名 <code>{SteamID}.profilebak</code>，建议把备份里的 <code>.profilebak</code> 一并覆盖，保持两个文件一致。</p></li>
+    <li><span class="step-title">启动服务器</span><p>启动服务器，该玩家下次进入游戏时角色即恢复为备份时刻的状态（等级、经验、印痕、物品栏等全部还原）。</p></li>
+    <li><span class="step-title">（可选）留存事故现场</span><p>覆盖前建议先把存档目录里原来的 <code>.arkprofile</code> 改名留存（如加 <code>.损坏</code> 后缀），万一恢复结果不符合预期可以回退排查。</p></li>
+  </ol>
+  <div class="warning">恢复的是<b>备份时刻</b>的角色，不是玩家记忆里「最后一秒」的角色——备份之后到恢复之前的游戏进度会丢失。去重规则决定了当天同等级只有一份，越早发现角色异常、可回溯的时间点越多。</div>
+</section>
+
+<section class="unit" id="u8" data-cat="cmd">
+  <div class="group">第六章 · 命令用法详解</div>
+  <h2>命令总表</h2>
+  <p class="lead">命令在服务器控制台或 RCON 中输入。插件英文名为 <code>BackupCharacter</code>，因此命令前缀固定为 <code>BackupCharacter.</code>。当前版本没有玩家聊天命令。</p>
+  <table class="data-table">
+    <tr><th>命令</th><th style="width:110px">权限</th><th>作用</th></tr>
+    <tr><td><code>BackupCharacter.Reload</code></td><td>管理员（控制台 / RCON）</td><td>重新读取 config.json，免重启刷新备份目录、最低等级等配置</td></tr>
+  </table>
+  <div class="note">符号约定：命令格式里的 <code>[方括号]</code> 表示可选参数，只是标注——<b>实际输入时不要输入方括号</b>。下方所有示例都是可直接照抄的真实输入。</div>
+</section>
+
+<section class="unit" id="u8b" data-cat="cmd">
+  <div class="group">第六章 · 命令用法详解</div>
+  <h2>BackupCharacter.Reload 命令详解</h2>
+  <p><b>作用：</b>让插件重新读取 <code>config.json</code>。改完备份根目录、最低等级等配置不想重启服务器时用它，立即生效。</p>
+  <pre><code>BackupCharacter.Reload</code></pre>
+  <table class="data-table">
+    <tr><th>参数</th><th style="width:60px">必填</th><th style="width:110px">缺省值</th><th>说明</th></tr>
+    <tr><td>无参数</td><td>—</td><td>—</td><td>本命令不带任何参数</td></tr>
+  </table>
+  <p><b>反馈：</b>成功时提示 <code>Reloaded config</code>；配置文件缺失或 JSON 损坏时提示 <code>Failed to reload config</code>，同时错误详情写入日志。只能在控制台 / RCON 使用，不是游戏内聊天命令。</p>
+</section>
+
+<section class="unit" id="u9" data-cat="faq">
+  <div class="group">第七章 · 常见问题</div>
+  <h2>常见问题</h2>
+  <details class="faq"><summary>备份文件在哪里？</summary><div class="answer">在 <code>config.json</code> 里 <code>Backup.RootDirectory</code> 配置的目录下（预置 <code>E:\Backup</code>），按「日期\SteamID\等级」三级分层存放。</div></details>
+  <details class="faq"><summary>玩家玩了一天，备份目录里却没有他？</summary><div class="answer">先试这个：① 检查该玩家等级是否低于 <code>Backup.MinLevel</code>（预置 5 级，低于不备份）；② 检查 <code>RootDirectory</code> 是否已改成实际路径（缺失或留空会静默跳过备份）；③ 确认玩家当天没有已经生成过同等级备份（当天同等级只留一份）；④ 都不是则在控制台 / RCON 执行 <code>BackupCharacter.Reload</code> 后让玩家再触发一次存档（下线或等自动存档），部署测试版的还能看控制台「---->」开头的调试日志定位原因。</div></details>
+  <details class="faq"><summary>怎么手动触发一次备份？</summary><div class="answer">没有单独的备份命令。让玩家下线再上线、等服务器自动存档，或在控制台执行一次 <code>SaveWorld</code>，都会触发全部在线玩家的数据保存，从而触发备份。</div></details>
+  <details class="faq"><summary>备份会不会占满磁盘？</summary><div class="answer">每个「玩家 × 日期 × 等级」组合约几 MB。建议定期清理备份根目录里的旧日期目录（如只保留近 30 天）；清理不影响插件运行。</div></details>
+  <details class="faq"><summary>我的服务器用了自定义存档目录（AltSaveDirectoryName），能用吗？</summary><div class="answer">能。插件每次备份时自动解析 <code>RunServer.cmd</code> 里的 <code>AltSaveDirectoryName=</code> 定位存档目录；启动参数没有该项时按官方默认 <code>SavedArks</code> 处理。</div></details>
+  <details class="faq"><summary>恢复角色后等级 / 物品和玩家说的对不上？</summary><div class="answer">恢复的是备份时刻的状态，备份之后的进度会丢失；等级目录名就是备份时等级，可换更低等级的备份目录（更早时间点）再试一次。</div></details>
+  <details class="faq"><summary>备份盘掉线 / 写失败会影响游戏吗？</summary><div class="answer">不会。备份流程出现异常只记录日志并跳过，游戏正常存档不受影响；备份盘恢复后下一次存档会自动继续备份。</div></details>
+  <details class="faq"><summary>控制台中文乱码（方块/问号）？</summary><div class="answer">先试这个：保持 <code>ConsoleEncoding</code> 为 <code>auto</code>（插件按服务器控制台代码页自动选择编码）并执行 <code>BackupCharacter.Reload</code>；仍乱码再按 ArkApi 版本显式指定——3.54 服务器设 <code>gbk</code>、3.55 服务器设 <code>utf8</code>。</div></details>
+  <details class="faq"><summary>插件没加载，控制台提示 Can't open config.json？</summary><div class="answer">先试这个：检查 <code>ArkApi\Plugins\BackupCharacter\config.json</code> 是否存在、文件名拼写是否正确；存在则用 JSON 校验工具检查格式（多逗号、缺引号、路径单反斜杠都会导致解析失败）。</div></details>
+  <details class="faq"><summary>改了 config.json 但没生效？</summary><div class="answer">先试这个：在控制台或 RCON 执行 <code>BackupCharacter.Reload</code> 热重载；若提示 <code>Failed to reload config</code> 说明新配置格式有错，按报错修正后重试。仍不生效则重启服务器。</div></details>
+  <details class="faq"><summary>怎么临时停用插件？</summary><div class="answer">把插件目录下的 <code>BackupCharacter.dll</code> 改名为 <code>BackupCharacter.dll.arkapi</code>（ArkApi 不加载该后缀），重启服务器即可停用；改回 <code>.dll</code> 恢复。</div></details>
+</section>
+
+<section class="unit" id="u10" data-cat="faq">
+  <div class="group">第八章 · 技术支持</div>
+  <h2>技术支持</h2>
+  <div class="note">先锋方舟服主群：138535385；作者 QQ：711919（依据插件启动横幅）。反馈问题时建议附上：服务器控制台的报错日志、插件目录的 <code>config.json</code> 内容（隐去密码）、所用插件版本号（见启动横幅）、问题玩家的 SteamID 与大致时间。</div>
+</section>
+
+<div class="empty hide" id="emptyState">没有匹配的内容，换个关键词或分类试试</div>
+</main>
+</div>
+
+<footer class="foot">
+  备份角色（BackupCharacter） · 服主教程 · 2026-09
+</footer>
+
+<script>
+(function(){
+var inp=document.getElementById('searchInput');
+var chips=[].slice.call(document.querySelectorAll('.chip'));
+var units=[].slice.call(document.querySelectorAll('.unit'));
+var empty=document.getElementById('emptyState');
+var cnt=document.getElementById('resultCount');
+var cat='all';
+function go(){
+  var q=(inp.value||'').trim().toLowerCase(),n=0;
+  units.forEach(function(u){
+    var okC=(cat=='all'||u.getAttribute('data-cat')==cat);
+    var t=(u.textContent||'').toLowerCase()+(u.getAttribute('data-kw')||'');
+    var okQ=!q||t.indexOf(q)>-1;
+    var s=okC&&okQ;u.classList.toggle('hide',!s);if(s)n++;
+  });
+  [].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    var el=document.getElementById(a.getAttribute('href').slice(1));
+    a.classList.toggle('dim',!(el&&!el.classList.contains('hide')));
+  });
+  empty.classList.toggle('hide',n>0);
+  cnt.textContent=n+' / '+units.length+' 条';
+}
+chips.forEach(function(c){c.addEventListener('click',function(){
+  chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+  cat=c.getAttribute('data-cat');go();
+})});
+inp.addEventListener('input',go);go();
+})();
+</script>
+
+</body>
+</html>
