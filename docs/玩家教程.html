@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>备份角色（BackupCharacter） 玩家教程</title>
+<style>
+/* ============================================================
+   样式区：禁止修改！
+   本模板是 xiangmujiaocheng 技能的「玩家教程」专属模板（清爽文档蓝）。
+   修改此区会破坏所有项目玩家教程的视觉统一。
+   ============================================================ */
+:root{--acc:#2563eb;--accbg:#eff6ff;--line:#e2e8f0;--line2:#cbd5e1;--text:#1e293b;--dim:#64748b;--bg2:#f8fafc;--ok:#16a34a;--warn:#d97706;--warnbg:#fffbeb;--warnline:#fde68a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15.5px/1.85 "Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:var(--text);background:#fff}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+code{background:var(--accbg);color:#1d4ed8;border-radius:4px;padding:1px 7px;font-family:Consolas,"Courier New",monospace;font-size:13.5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px 16px;overflow:auto}
+pre code{background:none;color:#0f172a;padding:0}
+.hide{display:none!important}
+
+.hero{background:linear-gradient(180deg,#eef5ff 0%,#ffffff 100%);border-bottom:1px solid var(--line);padding:36px 20px 26px}
+.hero-in{max-width:1180px;margin:0 auto}
+.kind{display:inline-block;background:var(--acc);color:#fff;border-radius:4px;font-size:13px;padding:2px 12px;letter-spacing:2px}
+.hero h1{margin:12px 0 6px;font-size:30px}
+.hero h1 .accent{color:var(--acc)}
+.hero .sub{color:var(--dim);margin:0;font-size:15px}
+
+.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.toolbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 20px}
+#searchInput{flex:1 1 240px;border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:14.5px;outline:none;background:var(--bg2)}
+#searchInput:focus{border-color:var(--acc);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:#fff;color:var(--dim);border-radius:999px;padding:5px 15px;font-size:13.5px;cursor:pointer}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.count{color:var(--dim);font-size:13px;white-space:nowrap}
+
+.layout{max-width:1180px;margin:0 auto;padding:26px 20px 70px;display:flex;gap:36px;align-items:flex-start}
+.toc{flex:0 0 215px;position:sticky;top:66px}
+.toc-title{font-size:12.5px;color:var(--dim);letter-spacing:3px;margin-bottom:8px;padding-left:10px}
+.toc a{display:block;color:var(--dim);padding:6px 10px;border-left:2px solid var(--line);font-size:14px}
+.toc a:hover{color:var(--acc);border-left-color:var(--acc);background:var(--accbg);text-decoration:none}
+.toc a.dim{opacity:.35}
+.content{flex:1 1 500px;min-width:320px}
+
+.unit{margin:0 0 38px}
+.group{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin-bottom:4px}
+.unit>h2{margin:0 0 10px;font-size:22px;border-left:4px solid var(--acc);padding-left:12px}
+.lead{color:var(--dim);margin:0 0 14px;font-size:14.5px}
+.unit h3{font-size:16.5px;margin:20px 0 8px}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:13px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:.15s}
+.card:hover{border-color:var(--acc);box-shadow:0 4px 14px rgba(37,99,235,.12)}
+.card .icon{font-size:22px}
+.card h4{margin:7px 0 5px;font-size:15.5px;color:var(--acc)}
+.card p{margin:0;color:var(--dim);font-size:13.5px}
+
+ol.steps{list-style:none;counter-reset:st;padding:0;margin:8px 0 0}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 20px 48px}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps>li::after{content:"";position:absolute;left:14px;top:36px;bottom:4px;width:2px;background:var(--line)}
+ol.steps>li:last-child{padding-bottom:2px}
+ol.steps>li:last-child::after{display:none}
+.step-title{display:block;font-weight:700;margin-bottom:3px}
+ol.steps p{margin:0}
+
+.note,.warning{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14.5px}
+.note{background:var(--accbg);border:1px solid #bfdbfe}
+.warning{background:var(--warnbg);border:1px solid var(--warnline)}
+
+table.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+.data-table th{background:var(--accbg);color:#1d4ed8;text-align:left}
+.data-table th,.data-table td{border:1px solid var(--line);padding:8px 13px}
+.data-table tr:nth-child(even) td{background:#fbfdff}
+
+details.faq{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:9px 0}
+details.faq summary{cursor:pointer;font-weight:600}
+details.faq[open]{border-color:var(--acc)}
+details.faq .answer{color:var(--dim);padding-top:7px}
+
+.shot{border:2px dashed var(--line2);border-radius:8px;padding:26px;text-align:center;color:var(--dim);font-size:14px;margin:13px 0}
+.badge{display:inline-block;border-radius:4px;padding:1px 10px;font-size:12.5px;margin-right:6px;color:var(--acc);border:1px solid var(--acc)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}
+.badge.warn{color:var(--warn);border-color:var(--warn)}
+.empty{border:1px dashed var(--line2);border-radius:10px;padding:44px;text-align:center;color:var(--dim);margin:20px 0}
+
+.foot{border-top:1px solid var(--line);color:var(--dim);text-align:center;padding:20px;font-size:13px;background:var(--bg2)}
+@media (max-width:820px){.toc{display:none}.layout{padding-top:18px}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hero-in">
+  <span class="kind">玩家教程</span>
+  <h1>备份角色（BackupCharacter） <span class="accent">玩家指南</span></h1>
+  <p class="sub">服务器自动为你的角色存档做备份：它给你带来什么保障、出问题怎么找回角色</p>
+</div></header>
+
+<div class="toolbar"><div class="toolbar-in">
+  <input id="searchInput" type="search" placeholder="搜索玩法、问题…">
+  <div class="chips">
+    <button class="chip on" data-cat="all">全部</button>
+    <button class="chip" data-cat="rules">玩法说明</button>
+    <button class="chip" data-cat="faq">常见问题</button>
+  </div>
+  <span class="count" id="resultCount"></span>
+</div></div>
+
+<div class="layout">
+<nav class="toc">
+  <div class="toc-title">目录</div>
+  <a href="#w1">功能总览</a>
+  <a href="#w2">备份规则</a>
+  <a href="#w3">角色找回</a>
+  <a href="#w4">常见问题</a>
+  <a href="#w5">获取帮助</a>
+</nav>
+
+<main class="content">
+
+<section class="unit" id="w1" data-cat="rules">
+  <div class="group">第一章 · 功能总览</div>
+  <h2>功能总览</h2>
+  <p class="lead">这台服务器安装了「备份角色」插件：服务器会在保存你角色数据的同时，自动把你的角色档案复制一份到独立备份盘。<b>你不需要做任何操作，也没有任何聊天命令</b>——备份完全自动，游戏体验零变化。</p>
+  <div class="card-grid">
+    <div class="unit card" data-cat="rules"><div class="icon">🛡️</div><h4>角色有底档</h4><p>角色档案损坏、误删、异常回档时，服主可以用备份把你的角色恢复到备份时刻的状态。</p></div>
+    <div class="unit card" data-cat="rules"><div class="icon">🔁</div><h4>全程自动</h4><p>服务器每次保存玩家数据（自动存档、你下线、掉线）都会触发，不需要你上线做什么。</p></div>
+    <div class="unit card" data-cat="rules"><div class="icon">🧬</div><h4>数据完整</h4><p>备份的是官方角色档案原文件：等级、经验、印痕、物品栏、状态点都在。</p></div>
+    <div class="unit card" data-cat="rules"><div class="icon">🎚️</div><h4>按级留档</h4><p>你的角色每升一级，当天就会在新等级留一份档案，可回溯的时间点更多。</p></div>
+  </div>
+  <table class="data-table">
+    <tr><th style="width:170px">命令</th><th>作用</th></tr>
+    <tr><td>（无）</td><td>本插件没有玩家命令，玩家无需任何操作；备份由服务器自动完成</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="w2" data-cat="rules">
+  <div class="group">第一章 · 玩法说明</div>
+  <h2>备份规则</h2>
+  <p class="lead">了解规则能帮你在需要找回角色时，知道能恢复到哪个时间点。具体备份起始等级、保留天数由服主配置，以服务器公告为准。</p>
+  <table class="data-table">
+    <tr><th style="width:200px">规则</th><th>对你的意义</th></tr>
+    <tr><td>存档即备份</td><td>服务器保存你角色数据的每个时刻（自动存档、你退出 / 掉线）都是一个潜在备份点</td></tr>
+    <tr><td>每天每级一份</td><td>同一天里同一等级只留一份备份；当天升级后会在新等级目录再留一份</td></tr>
+    <tr><td>低等级可能不备份</td><td>服主可设置从多少级开始备份（常见为 5 级），新号初期可能没有备份</td></tr>
+    <tr><td>保留时长由服主决定</td><td>备份盘空间有限，服主可能定期清理旧的日期目录</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="w3" data-cat="rules">
+  <div class="group">第一章 · 玩法说明</div>
+  <h2>角色找回</h2>
+  <p class="lead">发现角色异常（等级 / 物品消失、角色损坏、回档纠纷）时，按下面步骤找服主处理。恢复由服主在服务器端完成，全程几分钟。</p>
+  <ol class="steps">
+    <li><span class="step-title">第一时间停止游玩该角色</span><p>发现异常后尽量不要再登录该角色——继续游戏产生的进度会覆盖旧数据，可能让可恢复的时间点变少。</p></li>
+    <li><span class="step-title">联系服主</span><p>把情况告诉服主，最好提供：你的 SteamID（或游戏内名字 + 大致上线时间）、出问题的大致时间、出问题前的角色等级。</p></li>
+    <li><span class="step-title">服主从备份中恢复</span><p>服主停服后，把备份盘里你的角色档案拷回存档目录，重启服务器即完成恢复。</p></li>
+    <li><span class="step-title">上线确认</span><p>进入游戏确认角色等级、物品、印痕是否恢复。还差东西就再告诉服主——换一个更早等级的备份再恢复一次即可。</p></li>
+  </ol>
+  <div class="warning">恢复的是<b>备份时刻</b>的角色，不是「最后一秒」的角色——从备份到你发现异常之间的游戏进度会丢失。发现得越早，损失越小。</div>
+</section>
+
+<section class="unit" id="w4" data-cat="faq">
+  <div class="group">第二章 · 常见问题</div>
+  <h2>常见问题</h2>
+  <details class="faq"><summary>这个插件会影响我玩游戏吗？</summary><div class="answer">不会。它不注册任何玩家命令、不改游戏数值，只在服务器保存数据时悄悄复制一份你的角色档案，游戏体验零变化。</div></details>
+  <details class="faq"><summary>我的角色出问题了，怎么找回？</summary><div class="answer">先试这个：停止登录该角色，按「角色找回」一章联系服主，提供 SteamID / 名字、大致时间和出问题前的等级即可。</div></details>
+  <details class="faq"><summary>为什么我刚建的新号没有备份？</summary><div class="answer">服主通常设置从若干级（如 5 级）才开始备份，新号初期还没有档案属于正常现象。</div></details>
+  <details class="faq"><summary>恢复后少了一些东西？</summary><div class="answer">恢复点选的是「备份时刻」，那之后到你发现异常之间的进度会丢。可以请服主换更早时间（更低等级）的备份再恢复一次，但也只是更早的状态。</div></details>
+  <details class="faq"><summary>我能自己查看 / 下载我的备份吗？</summary><div class="answer">备份存放在服主的备份盘上，由服主管理。需要时（如转服带走角色）请联系服主协助。</div></details>
+  <details class="faq"><summary>我在聊天框输入命令没反应？</summary><div class="answer">本插件没有玩家命令，无需输入任何东西。若服务器装有其他插件，请查看对应插件的玩家教程。</div></details>
+</section>
+
+<section class="unit" id="w5" data-cat="faq">
+  <div class="group">第三章 · 获取帮助</div>
+  <h2>获取帮助</h2>
+  <div class="note">角色出问题先找服主处理（备份和恢复都在服主侧）；对插件本身有疑问，可通过先锋方舟服主群 138535385 反馈（依据插件启动横幅）。反馈时附上发生时间、你当时在做什么、截图，处理会更快。</div>
+</section>
+
+<div class="empty hide" id="emptyState">没有匹配的内容，换个关键词或分类试试</div>
+</main>
+</div>
+
+<footer class="foot">
+  备份角色（BackupCharacter） · 玩家教程 · 2026-09
+</footer>
+
+<script>
+(function(){
+var inp=document.getElementById('searchInput');
+var chips=[].slice.call(document.querySelectorAll('.chip'));
+var units=[].slice.call(document.querySelectorAll('.unit'));
+var empty=document.getElementById('emptyState');
+var cnt=document.getElementById('resultCount');
+var cat='all';
+function go(){
+  var q=(inp.value||'').trim().toLowerCase(),n=0;
+  units.forEach(function(u){
+    var okC=(cat=='all'||u.getAttribute('data-cat')==cat);
+    var t=(u.textContent||'').toLowerCase()+(u.getAttribute('data-kw')||'');
+    var okQ=!q||t.indexOf(q)>-1;
+    var s=okC&&okQ;u.classList.toggle('hide',!s);if(s)n++;
+  });
+  [].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    var el=document.getElementById(a.getAttribute('href').slice(1));
+    a.classList.toggle('dim',!(el&&!el.classList.contains('hide')));
+  });
+  empty.classList.toggle('hide',n>0);
+  cnt.textContent=n+' / '+units.length+' 条';
+}
+chips.forEach(function(c){c.addEventListener('click',function(){
+  chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+  cat=c.getAttribute('data-cat');go();
+})});
+inp.addEventListener('input',go);go();
+})();
+</script>
+
+</body>
+</html>
